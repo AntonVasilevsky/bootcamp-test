@@ -15,7 +15,7 @@ public class BootcampApplication {
 
         ConfigurableApplicationContext context = SpringApplication.run(BootcampApplication.class, args);
         EmployeeService employeeService = (EmployeeService) context.getBean("employeeService");
-        Employee alice = Employee
+       /* Employee alice = Employee
                 .builder()
                 .name("Alice")
                 .surname("Wonder")
@@ -33,7 +33,7 @@ public class BootcampApplication {
                 .build();
         employeeService.add(alice);
         employeeService.add(bob);
-        employeeService.findAll().forEach(System.out::println);
+        employeeService.findAll().forEach(System.out::println);*/
       //  employeeService.deleteAll();
 
     }

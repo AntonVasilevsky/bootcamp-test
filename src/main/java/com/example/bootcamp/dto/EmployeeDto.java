@@ -9,10 +9,10 @@ import lombok.Data;
 @Data
 public class EmployeeDto {
     @Size(min = 1, max = 60)
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "Field must contain only Latin letters")
+    @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Field must contain only Latin letters")
     private String surname;
     @Size(min = 1, max = 20)
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "Field must contain only Latin letters")
+    @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Field must contain only Latin letters")
     private String name;
     @Size(min = 1, max = 40)
     @Pattern(regexp = "^[a-zA-Z]+$", message = "Field must contain only Latin letters")
@@ -21,6 +21,6 @@ public class EmployeeDto {
     @Email(message = "Email should be valid")
     private String email;
     @Size(min = 1, max = 40)
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "Field must contain only Latin letters")
+    @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Field must contain only Latin letters")
     private String title;
 }
