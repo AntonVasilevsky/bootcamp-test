@@ -1,5 +1,7 @@
 package com.example.bootcamp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -16,10 +18,11 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode()
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int employeeId;
     @Column(name = "surname")
     @Size(min = 1, max = 60)
@@ -56,9 +59,11 @@ public class Employee {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "employee_project",
-            joinColumns = @JoinColumn(name = "projectId"),
-            inverseJoinColumns = @JoinColumn(name = "employeeId")
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
     )
+    @JsonManagedReference
+    @EqualsAndHashCode.Exclude
     private Set<Project> projects = new HashSet<>();
 
     public Employee() {

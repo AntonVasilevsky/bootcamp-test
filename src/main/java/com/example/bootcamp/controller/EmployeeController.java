@@ -28,7 +28,10 @@ public class EmployeeController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addEmployee(@RequestBody @Valid EmployeeDto dto, BindingResult bindingResult) {
+    public ResponseEntity<String> addEmployee(
+            @RequestBody @Valid EmployeeDto dto,
+            BindingResult bindingResult
+    ) {
         if(bindingResult.hasErrors()) {
             return ResponseEntity.badRequest()
                     .body(bindingResult.getAllErrors()
