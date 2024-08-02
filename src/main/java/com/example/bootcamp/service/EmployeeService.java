@@ -2,6 +2,7 @@ package com.example.bootcamp.service;
 
 import com.example.bootcamp.dto.EmployeeDto;
 import com.example.bootcamp.model.Employee;
+import com.example.bootcamp.model.Project;
 import com.example.bootcamp.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -57,4 +58,9 @@ public class EmployeeService implements DtoConverter<Employee, EmployeeDto>{
                 .map(this::toDto)
                 .toList();
     }
+
+    public Optional<Employee> findById(int employeeId) {
+        return repository.findById(employeeId);
+    }
+
 }

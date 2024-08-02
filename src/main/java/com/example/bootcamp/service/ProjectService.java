@@ -1,6 +1,5 @@
 package com.example.bootcamp.service;
 
-import com.example.bootcamp.dto.EmployeeDto;
 import com.example.bootcamp.dto.ProjectDto;
 import com.example.bootcamp.model.Employee;
 import com.example.bootcamp.model.Project;
@@ -14,10 +13,12 @@ import java.util.Optional;
 @Service
 public class ProjectService implements DtoConverter<Project, ProjectDto> {
     private final ProjectRepository repository;
+    private final EmployeeService employeeService;
     private final ModelMapper modelMapper;
 
-    public ProjectService(ProjectRepository repository, ModelMapper modelMapper) {
+    public ProjectService(ProjectRepository repository, EmployeeService employeeService, ModelMapper modelMapper) {
         this.repository = repository;
+        this.employeeService = employeeService;
         this.modelMapper = modelMapper;
     }
     public Optional<Project> findByName(String name) {
@@ -58,5 +59,15 @@ public class ProjectService implements DtoConverter<Project, ProjectDto> {
         return entityList.stream()
                 .map(this::toDto)
                 .toList();
+    }
+
+    public Optional<Project> findById(int projectId) {
+       return repository.findById(projectId);
+    }
+    public void addEmployeeToProject(Project project, Employee employee) {
+        employee.getProjects().add(project);
+        project.getEmployees().add(employee);
+        repository.save(project);
+        employeeService.add(employee);
     }
 }

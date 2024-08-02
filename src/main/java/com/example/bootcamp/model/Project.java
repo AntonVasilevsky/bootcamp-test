@@ -1,5 +1,7 @@
 package com.example.bootcamp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -33,10 +35,9 @@ public class Project {
             message = "Field must contain only Latin letters"
     )
     private String description;
-    @ManyToMany(
-            mappedBy = "projects",
-            fetch = FetchType.EAGER
-    )
+    @ManyToMany(mappedBy = "projects", fetch = FetchType.EAGER)
+    @JsonBackReference
+    @EqualsAndHashCode.Exclude
     private Set<Employee> employees = new HashSet<>();
     public Project() {}
 }
