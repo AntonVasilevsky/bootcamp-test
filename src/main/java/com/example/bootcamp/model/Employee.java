@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "employee")
 @Builder
@@ -13,10 +16,11 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int employeeId;
     @Column(name = "surname")
     @Size(min = 1, max = 60)
     @Pattern(regexp = "^[a-zA-Z]+$", message = "Field must contain only Latin letters")
@@ -35,8 +39,14 @@ public class Employee {
     private String email;
     @Column(name = "title")
     @Size(min = 1, max = 40)
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "Field must contain only Latin letters")
     private String title;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "project",
+            joinColumns = @JoinColumn(name = "projectId"),
+            inverseJoinColumns = @JoinColumn(name = "employeeId")
+    )
+    private Set<Project> projects = new HashSet<>();
 
     public Employee() {
     }

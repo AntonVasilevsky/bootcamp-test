@@ -22,11 +22,9 @@ import java.util.List;
 public class EmployeeController {
     private final EmployeeService employeeService;
 
-    private final ModelMapper modelMapper;
 
-    public EmployeeController(EmployeeService employeeService, ModelMapper modelMapper) {
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
-        this.modelMapper = modelMapper;
     }
 
     @PostMapping("/add")
@@ -39,8 +37,20 @@ public class EmployeeController {
             return ResponseEntity.badRequest().body(allErrors.toString());
         }
         log.info(dto);
-        Employee employee = convertOneToEntity(dto);
+
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+
+    @GetMapping("/one")
+    public EmployeeDto getOne() {
+        //todo edit to find by ..
+        Employee employee = employeeService.findAll().get(0);
+        return employeeService.toDto(employee);
+    }
+
+    @GetMapping("/all")
+    public List<EmployeeDto>getAll() {
+        return employeeService.manyToDto(employeeService.findAll());
     }
 
     private String getReadableStringErrors(List<ObjectError> allErrors) {
@@ -54,30 +64,4 @@ public class EmployeeController {
 
         return defaultMessage + ":" + errorMessage;
     }
-
-    private Employee convertOneToEntity(EmployeeDto dto) {
-        return modelMapper.map(dto, Employee.class);
-    }
-
-    @GetMapping("/all")
-    public List<EmployeeDto>getAll() {
-        List<Employee> all = employeeService.findAll();
-        List<EmployeeDto> employeeDtos = convertAllToDto(all);
-        return convertAllToDto(employeeService.findAll());
-    }
-
-    public List<EmployeeDto> convertAllToDto(List<Employee> all) {
-        return all.stream()
-                .map(this::convertOneToDto)
-                .toList();
-    }
-    public EmployeeDto convertOneToDto(Employee employee) {
-        return modelMapper.map(employee, EmployeeDto.class);
-    }
-    @GetMapping("/one")
-    public EmployeeDto getOne() {
-        Employee employee = employeeService.findAll().get(0);
-        return convertOneToDto(employee);
-    }
-
 }
