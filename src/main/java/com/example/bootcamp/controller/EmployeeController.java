@@ -30,23 +30,15 @@ public class EmployeeController {
     @PostMapping("/add")
     public ResponseEntity<String> addEmployee(@RequestBody @Valid EmployeeDto dto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            List<ObjectError> allErrors = bindingResult.getAllErrors();
-           // getReadableStringErrors(allErrors);
-
-            log.info(allErrors.toString());
-            return ResponseEntity.badRequest().body(allErrors.toString());
+            return ResponseEntity.badRequest()
+                    .body(bindingResult.getAllErrors()
+                            .toString());
         }
-        log.info(dto);
-
+        employeeService.add(employeeService.toEntity(dto));
+        log.info("new project added\n{}", dto);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
-    @GetMapping("/one")
-    public EmployeeDto getOne() {
-        //todo edit to find by ..
-        Employee employee = employeeService.findAll().get(0);
-        return employeeService.toDto(employee);
-    }
 
     @GetMapping("/all")
     public List<EmployeeDto>getAll() {

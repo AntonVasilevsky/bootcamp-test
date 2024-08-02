@@ -22,14 +22,14 @@ public class Project {
     @Column(name = "name")
     @Size(min = 1, max = 60)
     @Pattern(
-            regexp = "^[a-zA-Z]+$",
+            regexp = "^[a-zA-Z\\s]+$",
             message = "Field must contain only Latin letters"
     )
     private String name;
     @Column(name = "description")
     @Size(min = 1, max = 150)
     @Pattern(
-            regexp = "^[a-zA-Z]+$",
+            regexp = "^[a-zA-Z\\s]+$",
             message = "Field must contain only Latin letters"
     )
     private String description;
