@@ -1,22 +1,13 @@
-package com.example.bootcamp.model;
+package com.example.bootcamp.dto;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Data;
 
-@Entity
-@Table(name = "employee")
-@Builder
-@ToString
-@AllArgsConstructor
-@Getter
-@Setter
-public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+@Data
+public class EmployeeDto {
     @Column(name = "surname")
     @Size(min = 1, max = 60)
     @Pattern(regexp = "^[a-zA-Z]+$", message = "Field must contain only Latin letters")
@@ -37,10 +28,4 @@ public class Employee {
     @Size(min = 1, max = 40)
     @Pattern(regexp = "^[a-zA-Z]+$", message = "Field must contain only Latin letters")
     private String title;
-
-    public Employee() {
-    }
 }
-
-
-
