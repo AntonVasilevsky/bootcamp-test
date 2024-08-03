@@ -1,5 +1,6 @@
 package com.example.bootcamp.controller;
 
+import com.example.bootcamp.dto.SimpleEmployeeDto;
 import com.example.bootcamp.dto.ProjectDto;
 import com.example.bootcamp.model.Employee;
 import com.example.bootcamp.model.Project;
@@ -12,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/project")
@@ -65,9 +66,20 @@ public class ProjectController {
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
-    @GetMapping("")
-    public Set<Employee> show() {
-        return projectService.findById(1).orElseThrow().getEmployees();
+
+    @GetMapping("/all")
+    public List<ProjectDto> showAll() {
+        return projectService.findAll().stream()
+                .map(project -> {
+                    ProjectDto projectDto = projectService.toDto(project);
+                    List<SimpleEmployeeDto> simpleEmployeeDtos = project.getEmployees().stream()
+                            .map(employeeService::toSimpleDto)
+                            .toList();
+                    projectDto.setEmployees(simpleEmployeeDtos);
+                    return projectDto;
+                })
+                .toList();
+
     }
 
 }

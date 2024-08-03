@@ -1,5 +1,6 @@
 package com.example.bootcamp.service;
 
+import com.example.bootcamp.dto.SimpleEmployeeDto;
 import com.example.bootcamp.dto.ProjectDto;
 import com.example.bootcamp.model.Employee;
 import com.example.bootcamp.model.Project;
@@ -70,4 +71,5 @@ public class ProjectService implements DtoConverter<Project, ProjectDto> {
         repository.save(project);
         employeeService.add(employee);
     }
+
 }
