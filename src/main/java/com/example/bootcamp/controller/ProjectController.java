@@ -1,7 +1,7 @@
 package com.example.bootcamp.controller;
 
-import com.example.bootcamp.dto.SimpleEmployeeDto;
 import com.example.bootcamp.dto.ProjectDto;
+import com.example.bootcamp.dto.SimpleEmployeeDto;
 import com.example.bootcamp.model.Employee;
 import com.example.bootcamp.model.Project;
 import com.example.bootcamp.service.EmployeeService;
@@ -10,14 +10,14 @@ import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/project")
+@RequestMapping("/projects")
 @Log4j2
 public class ProjectController {
     private final ProjectService projectService;
@@ -33,14 +33,9 @@ public class ProjectController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addProject(
-            @RequestBody @Valid ProjectDto dto,
-            BindingResult bindingResult
+            @RequestBody @Valid ProjectDto dto
     ) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest()
-                    .body(bindingResult.getAllErrors()
-                            .toString());
-        }
+
         Project project = projectService.toEntity(dto);
         projectService.add(project);
         log.info("new project added\n{}", dto);
@@ -48,7 +43,7 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
-    @PostMapping("/{projectId}/employee/{employeeId}")
+    @PostMapping("/{projectId}/employees/{employeeId}")
     public ResponseEntity<String> addEmployeeToProjectById(
             @PathVariable int projectId,
             @PathVariable int employeeId
@@ -62,7 +57,6 @@ public class ProjectController {
             return ResponseEntity.badRequest().body(String.format("There is no employee with id:%d", employeeId));
         }
         projectService.addEmployeeToProject(pOptional.orElseThrow(), eOptional.orElseThrow());
-        log.info(projectService.findById(projectId).orElseThrow().getEmployees().toString());
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
@@ -72,14 +66,15 @@ public class ProjectController {
         return projectService.findAll().stream()
                 .map(project -> {
                     ProjectDto projectDto = projectService.toDto(project);
-                    List<SimpleEmployeeDto> simpleEmployeeDtos = project.getEmployees().stream()
+                    List<SimpleEmployeeDto> simpleEmployeeDtoList = project.getEmployees().stream()
                             .map(employeeService::toSimpleDto)
                             .toList();
-                    projectDto.setEmployees(simpleEmployeeDtos);
+                    projectDto.setEmployees(simpleEmployeeDtoList);
+
                     return projectDto;
                 })
+                .sorted(Comparator.comparing(ProjectDto::getName))
                 .toList();
-
     }
 
 }
