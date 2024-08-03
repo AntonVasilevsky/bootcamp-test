@@ -1,6 +1,7 @@
 package com.example.bootcamp.service;
 
 import com.example.bootcamp.dto.EmployeeDto;
+import com.example.bootcamp.dto.SimpleEmployeeDto;
 import com.example.bootcamp.model.Employee;
 import com.example.bootcamp.model.Project;
 import com.example.bootcamp.repository.EmployeeRepository;
@@ -61,6 +62,9 @@ public class EmployeeService implements DtoConverter<Employee, EmployeeDto>{
 
     public Optional<Employee> findById(int employeeId) {
         return repository.findById(employeeId);
+    }
+    public SimpleEmployeeDto toSimpleDto(Employee employee) {
+        return modelMapper.map(employee, SimpleEmployeeDto.class);
     }
 
 }
