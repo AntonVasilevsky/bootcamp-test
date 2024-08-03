@@ -68,7 +68,7 @@ public class ProjectController {
     }
 
     @GetMapping("/all")
-    public List<ProjectDto> show() {
+    public List<ProjectDto> showAll() {
         return projectService.findAll().stream()
                 .map(project -> {
                     ProjectDto projectDto = projectService.toDto(project);
