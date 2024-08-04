@@ -1,7 +1,6 @@
 package com.example.bootcamp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -21,7 +20,7 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int projectId;
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     @Size(min = 1, max = 60)
     @Pattern(
             regexp = "^[a-zA-Z\\s]+$",

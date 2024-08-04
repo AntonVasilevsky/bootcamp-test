@@ -1,11 +1,12 @@
 package com.example.bootcamp.service;
 
-import com.example.bootcamp.dto.SimpleEmployeeDto;
 import com.example.bootcamp.dto.ProjectDto;
 import com.example.bootcamp.model.Employee;
 import com.example.bootcamp.model.Project;
 import com.example.bootcamp.repository.ProjectRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -72,4 +73,7 @@ public class ProjectService implements DtoConverter<Project, ProjectDto> {
         employeeService.add(employee);
     }
 
+    public Page<Project> getPages(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
 }
