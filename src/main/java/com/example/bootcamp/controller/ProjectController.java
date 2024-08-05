@@ -36,7 +36,7 @@ public class ProjectController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addProject(
+    public ResponseEntity<String> addOne(
             @RequestBody @Valid ProjectDto dto
     ) {
         Project project = projectService.toEntity(dto);
