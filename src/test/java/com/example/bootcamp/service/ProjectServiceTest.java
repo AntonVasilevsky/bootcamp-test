@@ -35,7 +35,7 @@ class ProjectServiceTest {
 
         projectOneEmployee = Project.builder()
                 .projectId(3)
-                .name("projcetOneEmplyee")
+                .name("projectOneEmployee")
                 .description("with 1 employee")
                 .employees(Set.of(e1))
                 .build();

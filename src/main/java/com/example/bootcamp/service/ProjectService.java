@@ -32,8 +32,8 @@ public class ProjectService implements DtoConverter<Project, ProjectDto> {
     public void deleteOne(Project p) {
         repository.delete(p);
     }
-    public void add(Project p) {
-        repository.save(p);
+    public Project add(Project p) {
+       return repository.save(p);
     }
 
     public void deleteAll() {
