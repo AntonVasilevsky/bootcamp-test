@@ -8,6 +8,10 @@ import com.example.bootcamp.service.EmployeeService;
 import com.example.bootcamp.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +39,6 @@ public class ProjectController {
     public ResponseEntity<String> addProject(
             @RequestBody @Valid ProjectDto dto
     ) {
-
         Project project = projectService.toEntity(dto);
         projectService.add(project);
         log.info("new project added\n{}", dto);
@@ -50,11 +53,11 @@ public class ProjectController {
     ) {
         Optional<Project> pOptional = projectService.findById(projectId);
         if (pOptional.isEmpty()) {
-            return ResponseEntity.badRequest().body(String.format("There is no project with id:%d", projectId));
+            return ResponseEntity.badRequest().body("There is no project with id:%d".formatted(projectId));
         }
         Optional<Employee> eOptional = employeeService.findById(employeeId);
         if (eOptional.isEmpty()) {
-            return ResponseEntity.badRequest().body(String.format("There is no employee with id:%d", employeeId));
+            return ResponseEntity.badRequest().body("There is no employee with id:%d".formatted(employeeId));
         }
         projectService.addEmployeeToProject(pOptional.orElseThrow(), eOptional.orElseThrow());
 
@@ -73,8 +76,16 @@ public class ProjectController {
 
                     return projectDto;
                 })
-                .sorted(Comparator.comparing(ProjectDto::getName))
+                .filter(p -> p.getEmployees().size() > 0) // если я правильно понял Endpoint для получения всех проектов с сотрудниками:
+                .sorted(Comparator.comparing(ProjectDto::getName, String.CASE_INSENSITIVE_ORDER))
                 .toList();
+    }
+
+    @GetMapping
+    public Page<Project> showAllPage() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("name"));
+
+        return projectService.getPages(pageable);
     }
 
 }

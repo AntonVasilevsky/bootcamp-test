@@ -1,6 +1,5 @@
 package com.example.bootcamp.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -12,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "employee", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "surname", "patronymic"}))
 @Builder
 @ToString
 @AllArgsConstructor
@@ -45,7 +44,7 @@ public class Employee {
             message = "Field must contain only Latin letters"
     )
     private String patronymic;
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @Size(min = 1, max = 50)
     @Email(message = "Email should be valid")
     private String email;
