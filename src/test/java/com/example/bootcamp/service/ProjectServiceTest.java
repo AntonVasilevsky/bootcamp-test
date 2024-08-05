@@ -1,13 +1,17 @@
 package com.example.bootcamp.service;
 
-import com.example.bootcamp.dto.EmployeeDto;
+import com.example.bootcamp.dto.ProjectDto;
 import com.example.bootcamp.model.Employee;
+import com.example.bootcamp.model.Project;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -17,21 +21,37 @@ class ProjectServiceTest {
     @Mock
     private ModelMapper modelMapper;
     @InjectMocks
-    private EmployeeService projectService;
+    private ProjectService projectService;
+    private Employee e1;
+    private Project projectOneEmployee;
+
+    @BeforeEach
+    void setup() {
+        e1 = Employee.builder()
+                .name("e1")
+                .surname("surname1")
+                .patronymic("patron1")
+                .build();
+
+        projectOneEmployee = Project.builder()
+                .projectId(3)
+                .name("projcetOneEmplyee")
+                .description("with 1 employee")
+                .employees(Set.of(e1))
+                .build();
+    }
 
     @Test
-    void toDtoShouldReturnCorrectDto() {
-        Employee testEmployee = Employee.builder()
-                .name("AA")
+    void toDtoShouldReturnProjectDto() {
+        ProjectDto expected = ProjectDto.builder()
+                .name("projcetOneEmplyee")
+                .description("with 1 employee")
                 .build();
-        EmployeeDto dto = EmployeeDto.builder()
-                .name("AA")
-                .build();
-        when(modelMapper.map(testEmployee, EmployeeDto.class)).thenReturn(dto);
+        when(modelMapper.map(projectOneEmployee, ProjectDto.class)).thenReturn(expected);
 
-        EmployeeDto actual = projectService.toDto(testEmployee);
+        ProjectDto actual = projectService.toDto(projectOneEmployee);
 
-        assertThat(dto)
+        assertThat(expected)
                 .isEqualTo(actual);
     }
 }

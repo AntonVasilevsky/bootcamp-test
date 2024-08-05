@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "employee", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "surname", "patronymic"}))
 @Builder
 @ToString
 @AllArgsConstructor
