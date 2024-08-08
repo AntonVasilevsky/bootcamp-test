@@ -11,6 +11,7 @@ public class BootcampApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(BootcampApplication.class, args);
+
     }
     @Bean
     public ModelMapper modelMapper() {

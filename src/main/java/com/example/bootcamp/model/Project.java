@@ -34,7 +34,7 @@ public class Project {
             message = "Field must contain only Latin letters"
     )
     private String description;
-    @ManyToMany(mappedBy = "projects", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "projects")
     @JsonBackReference
     @EqualsAndHashCode.Exclude
     private Set<Employee> employees = new HashSet<>();

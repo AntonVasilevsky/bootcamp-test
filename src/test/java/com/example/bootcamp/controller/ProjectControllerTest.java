@@ -91,8 +91,10 @@ class ProjectControllerTest {
                 .description("no employee")
                 .employees(Collections.EMPTY_LIST)
                 .build();
-        when(projectService.findAll()).thenReturn(List.of(projectNoEmployees));
-        when(projectService.toDto(projectNoEmployees)).thenReturn(projectDto);
+        when(projectService.findAll())
+                .thenReturn(List.of(projectNoEmployees));
+        when(projectService.toDto(projectNoEmployees))
+                .thenReturn(projectDto);
 
         int actual = projectController.showAll().size();
 
