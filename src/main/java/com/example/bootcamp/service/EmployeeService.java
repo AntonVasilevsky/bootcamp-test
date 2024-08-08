@@ -3,7 +3,6 @@ package com.example.bootcamp.service;
 import com.example.bootcamp.dto.EmployeeDto;
 import com.example.bootcamp.dto.SimpleEmployeeDto;
 import com.example.bootcamp.model.Employee;
-import com.example.bootcamp.model.Project;
 import com.example.bootcamp.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
